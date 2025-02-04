@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 def cash_rest():
     try:
         # Загружаем данные из файлов Excel
-        excel_file = r'C:\Python\For_Warehouse\ESP_sklad.xlsx'
+        excel_file = r'For_Warehouse\ESP_sklad.xlsx'
         
         # Чтение листа "Склад_остатки"
         rest = pd.read_excel(excel_file, sheet_name='Склад_остатки', skiprows=3, index_col=1)
@@ -40,8 +40,8 @@ def cash_rest():
         print(f"Ошибка: {e}")
         return None
 def rest_of_good(article):
-    rest = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', skiprows=3, sheet_name='Склад_остатки')
-    price = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', sheet_name='справочник_товаров')
+    rest = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', skiprows=3, sheet_name='Склад_остатки')
+    price = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', sheet_name='справочник_товаров')
     rest = pd.merge(rest, price, how='left', on='Наименование товара')
     rest['total'] = rest['Стоимость'] * rest['Остаток']
     article = int(article)
@@ -60,15 +60,13 @@ def rest_of_good(article):
         s = f'{n} \t{count} штук\t{cost} рублей'
     return s
 def article():
-    name = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', index_col=1, sheet_name='справочник_товаров')
+    name = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', index_col=1, sheet_name='справочник_товаров')
     s = name['артикул'].to_string()
     return s
-import pandas as pd
-import numpy as np
 
 def rest_of_controllers():
     # Загружаем данные
-    rest = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', skiprows=3, sheet_name='Склад_остатки')
+    rest = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', skiprows=3, sheet_name='Склад_остатки')
 
     # Фильтруем контроллеры (учитываем регистр)
     res = rest[rest['Наименование товара'].str.contains("Контроллер|контроллер", na=False, regex=True)]
@@ -113,7 +111,7 @@ def post_new(name, type, amount):
 
     try:
         # Открытие файла Excel
-        wb = load_workbook(r'C:\Python\For_Warehouse\ESP_sklad.xlsx')
+        wb = load_workbook(r'For_Warehouse\ESP_sklad.xlsx')
 
         # Проверка наличия листа "Движение_склад"
         if "Движение_склад" not in wb.sheetnames:
@@ -128,7 +126,7 @@ def post_new(name, type, amount):
         # Сохранение с обработкой ошибки занятости файла
         temp_filename = "temp_table.xlsx"
         wb.save(temp_filename)
-        shutil.move(temp_filename, r'C:\Python\For_Warehouse\ESP_sklad.xlsx')
+        shutil.move(temp_filename, r'For_Warehouse\ESP_sklad.xlsx')
 
         print("✅ Данные успешно добавлены!")
 
@@ -140,8 +138,8 @@ def post_new(name, type, amount):
 
 def shipments(n):
     # Загружаем данные из Excel
-    warehouse_move = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', sheet_name='Движение_склад')
-    price = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', sheet_name='справочник_товаров')
+    warehouse_move = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', sheet_name='Движение_склад')
+    price = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', sheet_name='справочник_товаров')
 
     # Преобразуем даты, обрабатывая ошибки
     warehouse_move['Дата'] = pd.to_datetime(warehouse_move['Дата'], dayfirst=True, errors='coerce')
@@ -175,8 +173,8 @@ def shipments(n):
 
 def delivery(n):
     # Загружаем данные
-    warehouse_move = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', sheet_name='Движение_склад')
-    price = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', sheet_name='справочник_товаров')
+    warehouse_move = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', sheet_name='Движение_склад')
+    price = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', sheet_name='справочник_товаров')
 
     # Преобразуем даты (если в Excel был текст, `errors='coerce'` заменит ошибки на NaT)
     warehouse_move['Дата'] = pd.to_datetime(warehouse_move['Дата'], dayfirst=True, errors='coerce')
@@ -248,7 +246,7 @@ def post_new(name, operation_type, amount):
 def is_correct_article(article):
     try:
         # Загружаем Excel-файл
-        goods = pd.read_excel(r'C:\Python\For_Warehouse\ESP_sklad.xlsx', sheet_name='справочник_товаров')
+        goods = pd.read_excel(r'For_Warehouse\ESP_sklad.xlsx', sheet_name='справочник_товаров')
 
         # Проверяем, есть ли нужные столбцы
         if 'артикул' not in goods.columns or 'Наименование товара' not in goods.columns:
