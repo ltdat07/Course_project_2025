@@ -2,7 +2,7 @@ import telebot
 from telebot import types
 import test
 
-bot = telebot.TeleBot("TOKEN_BOT")
+bot = telebot.TeleBot("7567333584:AAGlU3c7IF9kjuseY7roAXVoUFqwzNjjGGk")
 message_list = [" ", " "]
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -10,8 +10,7 @@ def start(message):
     btn1 = types.KeyboardButton("Остатки")
     btn2 = types.KeyboardButton("Отгрузки")
     btn3 = types.KeyboardButton("Поступления")
-    btn4 = types.KeyboardButton("Внести поступление/отгрузку")
-    markup.add(btn1, btn2, btn3, btn4)
+    markup.add(btn1, btn2, btn3)
     bot.send_message(message.chat.id, text="Добрый день, {0.first_name}! Что бы вы хотели узнать?".format(message.from_user), reply_markup=markup)
     
 @bot.message_handler(content_types=['text'])
