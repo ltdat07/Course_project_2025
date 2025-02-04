@@ -12,7 +12,7 @@ def start(message):
     btn3 = types.KeyboardButton("Поступления")
     btn4 = types.KeyboardButton("Внести поступление/отгрузку")
     markup.add(btn1, btn2, btn3, btn4)
-    bot.send_message(message.chat.id, text="Wassup, {0.first_name}! Что бы вы хотели узнать?".format(message.from_user), reply_markup=markup)
+    bot.send_message(message.chat.id, text="Добрый день, {0.first_name}! Что бы вы хотели узнать?".format(message.from_user), reply_markup=markup)
     
 @bot.message_handler(content_types=['text'])
 def func(message):
