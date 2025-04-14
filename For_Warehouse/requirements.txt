@@ -1,5 +1,7 @@
 aiogram==3.19.0
-pandas
+pandas==2.2.3
+pyTelegramBotAPI==4.26.0
 openpyxl
 filelock
-pydantic-settings
+pydantic-settings==2.8.1
+
