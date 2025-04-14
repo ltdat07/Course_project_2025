@@ -6,6 +6,7 @@ from utils import TextEquals
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.client.bot import DefaultBotProperties
 import config
 import handlers as test
 
@@ -17,7 +18,7 @@ logging.basicConfig(
     encoding='utf-8'
 )
 
-bot = Bot(token=config.settings.TELEGRAM_BOT_TOKEN, parse_mode="HTML")
+bot = Bot(token=config.settings.TELEGRAM_BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
 dp = Dispatcher()
 
 class OperationState(StatesGroup):
