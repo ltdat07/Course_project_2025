@@ -1,33 +1,24 @@
-# Используем официальный минимальный образ Python 3.10
 FROM python:3.10-slim
 
-# Записываем логи Python сразу (без буферизации)
-ENV PYTHONUNBUFFERED=1
-
-# Обновляем пакеты и устанавливаем необходимые системные зависимости
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    libssl-dev \
-    libffi-dev \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-# Определяем рабочую директорию внутри контейнера
+# Указываем рабочую директорию
 WORKDIR /app
 
-# Сначала копируем requirements.txt, чтобы Docker мог кешировать слои, если зависимости не менялись
+# Копируем список зависимостей
 COPY requirements.txt .
 
-# Обновляем pip и устанавливаем пакеты из requirements.txt
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+COPY ESP_sklad_2.xlsx .
 
-# Теперь копируем весь остальной код проекта
-COPY . /app
+# Устанавливаем системные зависимости (если нужны)
+RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
 
-# Если нужно собрать расширения (Cython и т.д.), 
-# они будут подтянуты при установке из requirements.txt, 
-# так как необходимые системные пакеты уже добавлены выше.
+# Устанавливаем зависимости Python
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# По умолчанию запускать скрипт бота
+RUN mkdir /app/For_Warehouse
+COPY ESP_sklad_2.xlsx /app/For_Warehouse/ESP_sklad_2.xlsx
+
+# Копируем все файлы из текущей папки в контейнер
+COPY . .
+
+# Запускаем бота
 CMD ["python", "bot.py"]
